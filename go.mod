@@ -1,6 +1,6 @@
 module github.com/Dreamacro/clash
 
-go 1.13
+go 1.14
 
 require (
 	github.com/Dreamacro/go-shadowsocks2 v0.1.5
@@ -14,9 +14,9 @@ require (
 	github.com/oschwald/geoip2-golang v1.4.0
 	github.com/sh4d0wfiend/go-shadowsocksr v0.0.0-20200218095529-0fd9f315b912
 	github.com/sirupsen/logrus v1.4.2
-	github.com/stretchr/testify v1.4.0
-	golang.org/x/crypto v0.0.0-20200214034016-1d94cc7ab1c6
-	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+	github.com/stretchr/testify v1.5.1
+	golang.org/x/crypto v0.0.0-20200302210943-78000ba7a073
+	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
 	gopkg.in/eapache/channels.v1 v1.1.0
 	gopkg.in/yaml.v2 v2.2.8
