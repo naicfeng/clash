@@ -22,6 +22,7 @@ type trackerInfo struct {
 	Start         time.Time   `json:"start"`
 	Chain         C.Chain     `json:"chains"`
 	Rule          string      `json:"rule"`
+	RulePayload   string      `json:"rulePayload"`
 }
 
 type tcpTracker struct {
@@ -61,10 +62,6 @@ func (tt *tcpTracker) Close() error {
 
 func newTCPTracker(conn C.Conn, manager *Manager, metadata *C.Metadata, rule C.Rule) *tcpTracker {
 	uuid, _ := uuid.NewV4()
-	ruleType := ""
-	if rule != nil {
-		ruleType = rule.RuleType().String()
-	}
 
 	t := &tcpTracker{
 		Conn:    conn,
@@ -74,8 +71,13 @@ func newTCPTracker(conn C.Conn, manager *Manager, metadata *C.Metadata, rule C.R
 			Start:    time.Now(),
 			Metadata: metadata,
 			Chain:    conn.Chains(),
-			Rule:     ruleType,
+			Rule:     "",
 		},
+	}
+
+	if rule != nil {
+		t.trackerInfo.Rule = rule.RuleType().String()
+		t.trackerInfo.RulePayload = rule.Payload()
 	}
 
 	manager.Join(t)
@@ -127,10 +129,6 @@ func (ut *udpTracker) Close() error {
 
 func newUDPTracker(conn C.PacketConn, manager *Manager, metadata *C.Metadata, rule C.Rule) *udpTracker {
 	uuid, _ := uuid.NewV4()
-	ruleType := ""
-	if rule != nil {
-		ruleType = rule.RuleType().String()
-	}
 
 	ut := &udpTracker{
 		PacketConn: conn,
@@ -140,8 +138,13 @@ func newUDPTracker(conn C.PacketConn, manager *Manager, metadata *C.Metadata, ru
 			Start:    time.Now(),
 			Metadata: metadata,
 			Chain:    conn.Chains(),
-			Rule:     ruleType,
+			Rule:     "",
 		},
+	}
+
+	if rule != nil {
+		ut.trackerInfo.Rule = rule.RuleType().String()
+		ut.trackerInfo.RulePayload = rule.Payload()
 	}
 
 	manager.Join(ut)
