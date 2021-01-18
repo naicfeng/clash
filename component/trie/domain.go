@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	wildcard    = "*"
-	dotWildcard = ""
-	domainStep  = "."
+	wildcard        = "*"
+	dotWildcard     = ""
+	complexWildcard = "+"
+	domainStep      = "."
 )
 
 var (
@@ -16,9 +17,9 @@ var (
 	ErrInvalidDomain = errors.New("invalid domain")
 )
 
-// Trie contains the main logic for adding and searching nodes for domain segments.
+// DomainTrie contains the main logic for adding and searching nodes for domain segments.
 // support wildcard domain (e.g *.google.com)
-type Trie struct {
+type DomainTrie struct {
 	root *Node
 }
 
@@ -29,7 +30,11 @@ func validAndSplitDomain(domain string) ([]string, bool) {
 
 	parts := strings.Split(domain, domainStep)
 	if len(parts) == 1 {
-		return nil, false
+		if parts[0] == "" {
+			return nil, false
+		}
+
+		return parts, true
 	}
 
 	for _, part := range parts[1:] {
@@ -47,12 +52,25 @@ func validAndSplitDomain(domain string) ([]string, bool) {
 // 2. *.example.com
 // 3. subdomain.*.example.com
 // 4. .example.com
-func (t *Trie) Insert(domain string, data interface{}) error {
+// 5. +.example.com
+func (t *DomainTrie) Insert(domain string, data interface{}) error {
 	parts, valid := validAndSplitDomain(domain)
 	if !valid {
 		return ErrInvalidDomain
 	}
 
+	if parts[0] == complexWildcard {
+		t.insert(parts[1:], data)
+		parts[0] = dotWildcard
+		t.insert(parts, data)
+	} else {
+		t.insert(parts, data)
+	}
+
+	return nil
+}
+
+func (t *DomainTrie) insert(parts []string, data interface{}) {
 	node := t.root
 	// reverse storage domain part to save space
 	for i := len(parts) - 1; i >= 0; i-- {
@@ -65,7 +83,6 @@ func (t *Trie) Insert(domain string, data interface{}) error {
 	}
 
 	node.Data = data
-	return nil
 }
 
 // Search is the most important part of the Trie.
@@ -73,7 +90,7 @@ func (t *Trie) Insert(domain string, data interface{}) error {
 // 1. static part
 // 2. wildcard domain
 // 2. dot wildcard domain
-func (t *Trie) Search(domain string) *Node {
+func (t *DomainTrie) Search(domain string) *Node {
 	parts, valid := validAndSplitDomain(domain)
 	if !valid || parts[0] == "" {
 		return nil
@@ -121,6 +138,6 @@ func (t *Trie) Search(domain string) *Node {
 }
 
 // New returns a new, empty Trie.
-func New() *Trie {
-	return &Trie{root: newNode(nil)}
+func New() *DomainTrie {
+	return &DomainTrie{root: newNode(nil)}
 }
