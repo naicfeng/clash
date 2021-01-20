@@ -53,6 +53,10 @@ func (p *Process) Payload() string {
 	return p.process
 }
 
+func (p *Process) NoResolveIP() bool {
+	return true
+}
+
 func (p *Process) ShouldResolveIP() bool {
 	return false
 }
