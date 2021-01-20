@@ -25,19 +25,15 @@ func ParseRule(tp, payload, target string, params []string) (C.Rule, error) {
 	case "IP-CIDR", "IP-CIDR6":
 		noResolve := HasNoResolve(params)
 		parsed, parseErr = NewIPCIDR(payload, target, WithIPCIDRNoResolve(noResolve))
-	// deprecated when bump to 1.0
-	case "SOURCE-IP-CIDR":
-		fallthrough
 	case "SRC-IP-CIDR":
 		parsed, parseErr = NewIPCIDR(payload, target, WithIPCIDRSourceIP(true), WithIPCIDRNoResolve(true))
 	case "SRC-PORT":
 		parsed, parseErr = NewPort(payload, target, true)
 	case "DST-PORT":
 		parsed, parseErr = NewPort(payload, target, false)
+	case "PROCESS-NAME":
+		parsed, parseErr = NewProcess(payload, target)
 	case "MATCH":
-		fallthrough
-	// deprecated when bump to 1.0
-	case "FINAL":
 		parsed = NewMatch(target)
 	default:
 		parseErr = fmt.Errorf("unsupported rule type %s", tp)
