@@ -11,13 +11,14 @@ require (
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/gorilla/websocket v1.4.2
 	github.com/miekg/dns v1.1.29
-	github.com/mzz2017/shadowsocksR v0.0.0-20200126130347-721f53a7b15a
 	github.com/oschwald/geoip2-golang v1.4.0
 	github.com/sirupsen/logrus v1.6.0
 	github.com/stretchr/testify v1.6.1
-	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
-	golang.org/x/net v0.0.0-20200602114024-627f9648deb9
-	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
+	github.com/v2rayA/shadowsocksR v1.0.3
+	golang.org/x/crypto v0.0.0-20201203163018-be400aefbc4c
+	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	golang.org/x/sys v0.0.0-20201202213521-69691e467435
 	gopkg.in/eapache/channels.v1 v1.1.0
 	gopkg.in/yaml.v2 v2.3.0
 )

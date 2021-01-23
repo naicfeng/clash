@@ -10,10 +10,10 @@ import (
 	"github.com/Dreamacro/clash/component/dialer"
 	C "github.com/Dreamacro/clash/constant"
 
-	SSRUtils "github.com/mzz2017/shadowsocksR"
-	SSRObfs "github.com/mzz2017/shadowsocksR/obfs"
-	SSRProtocol "github.com/mzz2017/shadowsocksR/protocol"
-	SSRServer "github.com/mzz2017/shadowsocksR/ssr"
+	SSRUtils "github.com/v2rayA/shadowsocksR"
+	SSRObfs "github.com/v2rayA/shadowsocksR/obfs"
+	SSRProtocol "github.com/v2rayA/shadowsocksR/protocol"
+	SSRServer "github.com/v2rayA/shadowsocksR/ssr"
 )
 
 type ShadowSocksR struct {
