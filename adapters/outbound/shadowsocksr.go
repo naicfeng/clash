@@ -14,6 +14,7 @@ import (
 	SSRObfs "github.com/v2rayA/shadowsocksR/obfs"
 	SSRProtocol "github.com/v2rayA/shadowsocksR/protocol"
 	SSRServer "github.com/v2rayA/shadowsocksR/ssr"
+	cipher2 "github.com/v2rayA/shadowsocksR/streamCipher"
 )
 
 type ShadowSocksR struct {
@@ -56,7 +57,7 @@ func (ssr *ShadowSocksR) DialContext(ctx context.Context, metadata *C.Metadata) 
 	}
 	tcpKeepAlive(c)
 
-	cipher, err := SSRUtils.NewStreamCipher(ssr.cipher, ssr.password)
+	cipher, err := cipher2.NewStreamCipher(ssr.cipher, ssr.password)
 	if err != nil {
 		return nil, fmt.Errorf("ssr %s initialize error: %w", ssr.server, err)
 	}
@@ -67,7 +68,7 @@ func (ssr *ShadowSocksR) DialContext(ctx context.Context, metadata *C.Metadata) 
 	}
 
 	ssconn.IObfs = SSRObfs.NewObfs(ssr.obfs)
-	obfsServerInfo := &SSRServer.ServerInfoForObfs{
+	obfsServerInfo := &SSRServer.ServerInfo{
 		Host:   ssr.host,
 		Port:   ssr.port,
 		TcpMss: 1460,
@@ -77,7 +78,7 @@ func (ssr *ShadowSocksR) DialContext(ctx context.Context, metadata *C.Metadata) 
 	ssconn.IObfs.SetData(ssconn.IObfs.GetData())
 
 	ssconn.IProtocol = SSRProtocol.NewProtocol(ssr.protocol)
-	protocolServerInfo := &SSRServer.ServerInfoForObfs{
+	protocolServerInfo := &SSRServer.ServerInfo{
 		Host:   ssr.host,
 		Port:   ssr.port,
 		TcpMss: 1460,
